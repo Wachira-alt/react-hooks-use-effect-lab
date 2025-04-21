@@ -1,41 +1,25 @@
-import React, { useState } from "react";
-import Question from "./Question";
-import quiz from "../data/quiz";
+import React, { useState } from 'react';
+import Question from './Question';
 
-function App() {
-  const [questions, setQuestions] = useState(quiz);
-  const [currentQuestionId, setCurrentQuestion] = useState(1);
-  const [score, setScore] = useState(0);
-  const currentQuestion = questions.find((q) => q.id === currentQuestionId);
+const App = () => {
+  const [answered, setAnswered] = useState(null);
 
-  function handleQuestionAnswered(correct) {
-    if (currentQuestionId < questions.length) {
-      setCurrentQuestion((currentQuestionId) => currentQuestionId + 1);
-    } else {
-      setCurrentQuestion(null);
-    }
-    if (correct) {
-      setScore((score) => score + 1);
-    }
-  }
+  const handleAnswered = (result) => {
+    setAnswered(result); // Update based on user answer or timeout
+  };
 
   return (
-    <main>
-      <section>
-        {currentQuestion ? (
-          <Question
-            question={currentQuestion}
-            onAnswered={handleQuestionAnswered}
-          />
-        ) : (
-          <>
-            <h1>Game Over</h1>
-            <h2>Total Correct: {score}</h2>
-          </>
-        )}
-      </section>
-    </main>
+    <div>
+      <Question
+        question="What is the capital of France?"
+        answers={['Paris', 'London', 'Berlin', 'Rome']}
+        onAnswered={handleAnswered}
+      />
+      {answered !== null && (
+        <p>{answered ? 'You answered correctly!' : 'Time is up!'}</p>
+      )}
+    </div>
   );
-}
+};
 
 export default App;
